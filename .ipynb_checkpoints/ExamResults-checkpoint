@@ -1,0 +1,161 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "id": "be136152-639d-4622-a64a-2361854505fd",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import numpy as np\n",
+    "import pandas as pd\n",
+    "import matplotlib.pyplot as plt\n",
+    "from sklearn.model_selection import train_test_split\n",
+    "from sklearn.ensemble import RandomForestClassifier\n",
+    "from sklearn.model_selection import cross_val_score\n",
+    "from sklearn.metrics import roc_auc_score\n",
+    "from sklearn.metrics import roc_curve\n",
+    "from sklearn.metrics import confusion_matrix\n",
+    "from sklearn.metrics import classification_report\n",
+    "from sklearn.metrics import accuracy_score\n",
+    "from sklearn.metrics import f1_score"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "id": "4fb33b1c-3120-412a-899e-07b0abc7b337",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdin",
+     "output_type": "stream",
+     "text": [
+      "Please enter your information about math:  32\n",
+      "Please enter your information about physics:  24\n",
+      "Please enter your information about chem:  27\n",
+      "Please enter your information about dari:  40\n",
+      "Please enter your information about pashto:  40\n",
+      "Please enter your information about english:  40\n",
+      "Please enter your information about history:  17\n",
+      "Please enter your information about computer:  40\n",
+      "Please enter your information about ghu:  14\n",
+      "Please enter your information about qurn:  34\n",
+      "Please enter your information about arabi:  12\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Congrats! you are pased.\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "C:\\Users\\Mustafa akbari\\anaconda3\\Lib\\site-packages\\sklearn\\base.py:439: UserWarning: X does not have valid feature names, but RandomForestClassifier was fitted with feature names\n",
+      "  warnings.warn(\n"
+     ]
+    }
+   ],
+   "source": [
+    "# np.random.seed(42)\n",
+    "exam = pd.read_csv(\"sk-data/exam.csv\")\n",
+    "x = exam.drop(\"target\", axis=1)\n",
+    "y = exam[\"target\"]\n",
+    "x_train, x_test, y_train, y_test = train_test_split(x,y,test_size=0.2)\n",
+    "clf = RandomForestClassifier()\n",
+    "clf.fit(x_train, y_train)\n",
+    "lis = []\n",
+    "elements = ['math', 'physics', 'chem', 'dari', 'pashto', 'english', 'history',\n",
+    "       'computer', 'ghu', 'qurn', 'arabi']\n",
+    "for i in elements:\n",
+    "    enters = float(input(f\"Please enter your information about {i}: \"))\n",
+    "    lis.append(enters)\n",
+    "np_array = np.array(lis)\n",
+    "prediction = clf.predict(np_array.reshape(1,-1))\n",
+    "if prediction == 0:\n",
+    "    print(\"oops! you are field! try more.\")\n",
+    "elif prediction == 1:\n",
+    "    print(\"Congrats! you are pased.\")\n",
+    "else:\n",
+    "    print(\"There is a problem with the system.\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "id": "4bea4485-47a0-439f-b5d8-69d274a24e4e",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([1., 1., 1., 1., 1., 1., 1., 1., 1., 1.])"
+      ]
+     },
+     "execution_count": 7,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "cross_val_score(clf, x, y, cv=10)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "id": "20a09a3f-2466-48cd-a6ae-e5cb80db792c",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "Index(['math', 'physics', 'chem', 'dari', 'pashto', 'english', 'history',\n",
+       "       'computer', 'ghu', 'qurn', 'arabi', 'target'],\n",
+       "      dtype='object')"
+      ]
+     },
+     "execution_count": 8,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "exam.columns"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "70069261-e56a-445c-9eb4-0079f9f83dc0",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3 (ipykernel)",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.11.7"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}
